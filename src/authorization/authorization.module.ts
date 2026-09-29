@@ -6,9 +6,12 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { UserServiceTypes } from '@SergeyLys/tracker-contracts';
 import { join } from 'path';
 import { protoPath } from '@SergeyLys/tracker-contracts/paths';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { RefreshTokens } from './entities/refresh-token.entity';
 
 @Module({
   imports: [
+    SequelizeModule.forFeature([RefreshTokens]),
     JwtModule.register({
       secret: process.env.PRIVATE_KEY || 'SECRET',
       signOptions: {
