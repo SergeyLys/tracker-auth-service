@@ -20,8 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@SergeyLys/tracker-contracts": "^1.0.6",
-    "@SergeyLys/tracker-pinno-logger": "^1.0.3",
+    "@SergeyLys/tracker-contracts": "^1.0.8",
+    "@SergeyLys/tracker-pinno-logger": "^1.0.5",
     "@grpc/grpc-js": "^1.14.1",
     "@nestjs/common": "^11.1.8",
     "@nestjs/core": "^11.1.8",

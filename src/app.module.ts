@@ -6,6 +6,7 @@ import { RefreshTokens } from './authorization/entities/refresh-token.entity';
 
 @Module({
   imports: [
+    PinoLoggerModule,
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: process.env.DATABASE_HOST || 'postgres',
@@ -17,7 +18,6 @@ import { RefreshTokens } from './authorization/entities/refresh-token.entity';
       autoLoadModels: true,
     }),
     AuthorizationModule,
-    PinoLoggerModule,
   ],
   controllers: [],
   providers: [],

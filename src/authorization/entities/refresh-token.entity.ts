@@ -51,7 +51,7 @@ export class RefreshTokens extends Model<
   declare revokedAt: CreationOptional<Date>;
 
   @Column({
-    type: DataType.DATE,
+    type: DataType.UUID,
   })
   declare replacedById: CreationOptional<string>;
 
