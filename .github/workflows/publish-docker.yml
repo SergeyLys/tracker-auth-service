@@ -1,0 +1,21 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    uses: SergeyLys/tracker-pipelines/.github/workflows/docker-publish.yml@master
+
+    with:
+      ecr_repository: gymtracker/auth-service
+
+    secrets:
+      aws_role_arn: ${{ secrets.AWS_ROLE_ARN }}
+      github_packages_token: ${{ secrets.GH_PACKAGES_TOKEN }}
