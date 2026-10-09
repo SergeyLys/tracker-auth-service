@@ -1,23 +1,18 @@
 import { Module } from '@nestjs/common';
 import { AuthorizationService } from './authorization.service';
 import { AuthorizationController } from './authorization.controller';
-import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { UserServiceTypes } from '@SergeyLys/tracker-contracts';
 import { join } from 'path';
 import { protoPath } from '@SergeyLys/tracker-contracts/paths';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { RefreshTokens } from './entities/refresh-token.entity';
+import { TokenModule } from '../token/token.module';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([RefreshTokens]),
-    JwtModule.register({
-      secret: process.env.PRIVATE_KEY || 'SECRET',
-      signOptions: {
-        expiresIn: '24h',
-      },
-    }),
+    TokenModule,
     ClientsModule.register([
       {
         name: UserServiceTypes.USER_SERVICE_NAME,

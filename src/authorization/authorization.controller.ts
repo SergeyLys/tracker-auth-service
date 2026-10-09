@@ -5,6 +5,7 @@ import { CommonAuthTypes } from '@SergeyLys/tracker-contracts';
 import { AuthorizationServiceTypes } from '@SergeyLys/tracker-contracts';
 import { GrpcMethod } from '@nestjs/microservices';
 import { GrpcLoggingInterceptor } from '@SergeyLys/tracker-pinno-logger';
+import { TokenService } from '../token/token.service';
 
 const { AUTH_SERVICE_NAME, AuthServiceControllerMethods } =
   AuthorizationServiceTypes;
@@ -20,10 +21,13 @@ type RefreshTokenRequest = CommonAuthTypes.RefreshTokenRequest;
 @AuthServiceControllerMethods()
 @UseInterceptors(GrpcLoggingInterceptor)
 export class AuthorizationController implements AuthServiceController {
-  constructor(private readonly authorizationService: AuthorizationService) {}
+  constructor(
+    private readonly authorizationService: AuthorizationService,
+    private readonly tokenService: TokenService,
+  ) {}
 
   @GrpcMethod(AUTH_SERVICE_NAME, 'login')
-  login(payload: ValidateUserRequest) {
+  async login(payload: ValidateUserRequest) {
     return this.authorizationService.login(payload);
   }
 

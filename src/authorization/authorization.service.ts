@@ -17,6 +17,7 @@ import {
   PinoLoggerService,
   PinoLoggerModule,
 } from '@SergeyLys/tracker-pinno-logger';
+import { TokenService } from '../token/token.service';
 
 type CreateUserRequest = CommonAuthTypes.RegisterRequest;
 type ValidateUserRequest = CommonAuthTypes.LoginRequest;
@@ -32,11 +33,11 @@ export class AuthorizationService {
   private userClient: UserServiceClient = {} as UserServiceClient;
 
   constructor(
-    private readonly jwtService: JwtService,
     @Inject(USER_SERVICE_NAME) private client: ClientGrpc,
     @InjectModel(RefreshTokens)
     private readonly refreshTokensRepository: typeof RefreshTokens,
     private readonly logger: PinoLoggerService,
+    private readonly tokenService: TokenService,
   ) {}
 
   onModuleInit() {
@@ -132,7 +133,7 @@ export class AuthorizationService {
       });
     }
 
-    const accessToken = this.generateAccessToken(candidate);
+    const accessToken = await this.generateAccessToken(candidate);
 
     const transaction =
       await this.refreshTokensRepository.sequelize!.transaction();
@@ -210,7 +211,7 @@ export class AuthorizationService {
       });
     }
 
-    const accessToken = this.generateAccessToken(candidate);
+    const accessToken = await this.generateAccessToken(candidate);
     const { refreshToken } = await this.saveRefreshToken(candidate.id);
 
     return {
@@ -227,12 +228,11 @@ export class AuthorizationService {
     return randomBytes(64).toString('base64url');
   }
 
-  private generateAccessToken(user?: Partial<User>) {
-    const payload = { email: user?.email, id: user?.id, roles: user?.roles };
-
-    return this.jwtService.sign(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: '15m',
+  private generateAccessToken(user: Pick<User, 'email' | 'roles' | 'id'>) {
+    return this.tokenService.createAccessToken({
+      email: user.email,
+      sub: user.id,
+      // roles: user.roles
     });
   }
 }
