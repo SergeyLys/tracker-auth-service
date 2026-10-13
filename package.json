@@ -20,7 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@SergeyLys/tracker-contracts": "^1.0.8",
+    "@SergeyLys/tracker-contracts": "^1.0.9",
     "@SergeyLys/tracker-pinno-logger": "^1.0.5",
     "@aws-sdk/client-kms": "^3.1147.0",
     "@grpc/grpc-js": "^1.14.1",
