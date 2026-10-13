@@ -20,10 +20,12 @@ type RefreshTokenRequest = CommonAuthTypes.RefreshTokenRequest;
 @AuthServiceControllerMethods()
 @UseInterceptors(GrpcLoggingInterceptor)
 export class AuthorizationController implements AuthServiceController {
-  constructor(private readonly authorizationService: AuthorizationService) {}
+  constructor(
+    private readonly authorizationService: AuthorizationService,
+  ) {}
 
   @GrpcMethod(AUTH_SERVICE_NAME, 'login')
-  login(payload: ValidateUserRequest) {
+  async login(payload: ValidateUserRequest) {
     return this.authorizationService.login(payload);
   }
 
