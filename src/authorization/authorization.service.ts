@@ -47,15 +47,21 @@ export class AuthorizationService {
 
   async login(loginUserDto: ValidateUserRequest) {
     const schema = Schemas.LoginRequestSchema.parse(loginUserDto);
-    const { user: candidate } =
-      await new Promise<UserServiceTypes.UserResponse>((resolve, reject) => {
-        this.userClient.validateUser(schema).subscribe({
-          next: (res) => resolve(res),
-          error: (err) => reject(new RpcException(err)),
-        });
-      });
+    // const { user: candidate } =
+    //   await new Promise<UserServiceTypes.UserResponse>((resolve, reject) => {
+    //     this.userClient.validateUser(schema).subscribe({
+    //       next: (res) => resolve(res),
+    //       error: (err) => reject(new RpcException(err)),
+    //     });
+    //   });
 
-    const tokens = await this.getTokensPair(candidate);
+    const tokens = await this.getTokensPair({
+      id: '4c22a967-2474-4996-8fee-6c6c620d4272',
+      email: 'test@email.com',
+      // @ts-ignore
+      password: 'string',
+      name: 'name',
+    });
 
     return tokens;
   }
@@ -142,10 +148,6 @@ export class AuthorizationService {
       const { refreshToken: newRefreshToken, id: newRefreshTokenId } =
         await this.saveRefreshToken(candidate?.id, transaction);
 
-      console.log('\n\n\n');
-      console.log('newRefreshTokenId ', newRefreshTokenId);
-      console.log('\n\n\n');
-
       await storedToken.update(
         {
           revokedAt: new Date(),
@@ -157,10 +159,6 @@ export class AuthorizationService {
           transaction,
         },
       );
-
-      console.log('\n\n\n');
-      console.log('newRefreshTokenId ', storedToken);
-      console.log('\n\n\n');
 
       await transaction.commit();
 

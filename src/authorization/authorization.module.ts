@@ -9,10 +9,6 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { RefreshTokens } from './entities/refresh-token.entity';
 import { TokenModule } from '../token/token.module';
 
-console.log('\n\n\n');
-console.log(process.env.USER_SERVICE_GRPC_URL);
-console.log('\n\n\n');
-
 @Module({
   imports: [
     SequelizeModule.forFeature([RefreshTokens]),

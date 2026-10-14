@@ -1,7 +1,4 @@
-import {
-  KMSClient,
-  SignCommand,
-} from '@aws-sdk/client-kms';
+import { KMSClient, SignCommand } from '@aws-sdk/client-kms';
 import { RpcException } from '@nestjs/microservices';
 import { status as GrpcStatus } from '@grpc/grpc-js';
 import type { JwtSigner } from './jwt-signer.interface';
@@ -32,6 +29,10 @@ export class KmsJwtSigner implements JwtSigner {
         message: 'KMS did not return a signature',
       });
     }
+
+    console.log('\n\n\n');
+    console.log('kms ', result);
+    console.log('\n\n\n');
 
     return Buffer.from(result.Signature).toString('base64url');
   }
