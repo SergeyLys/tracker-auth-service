@@ -27,8 +27,8 @@ CMD ["pnpm", "run", "start:dev"]
 
 FROM base AS build
 
+
 COPY . .
-COPY certs/global-bundle.pem ./certs/global-bundle.pem
 
 RUN --mount=type=secret,id=github_token \
   sh -c 'echo "//npm.pkg.github.com/:_authToken=$(cat /run/secrets/github_token)" > .npmrc && \
@@ -39,6 +39,7 @@ RUN pnpm run build
 
 FROM base AS production
 
+COPY certs/global-bundle.pem ./certs/global-bundle.pem
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
