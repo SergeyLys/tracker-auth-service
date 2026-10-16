@@ -39,7 +39,7 @@ RUN pnpm run build
 
 FROM base AS production
 
-COPY certs/global-bundle.pem ./certs/global-bundle.pem
+COPY --from=build /app/certs/global-bundle.pem ./certs/global-bundle.pem
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
