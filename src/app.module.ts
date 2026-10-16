@@ -20,6 +20,12 @@ import { TokenModule } from './token/token.module';
       database: process.env.DATABASE_NAME,
       models: [RefreshTokens],
       autoLoadModels: true,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: true,
+        },
+      },
     }),
     PinoLoggerModule,
     TokenModule,
