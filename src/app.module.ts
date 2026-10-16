@@ -5,6 +5,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { RefreshTokens } from './authorization/entities/refresh-token.entity';
 import { ConfigModule } from '@nestjs/config';
 import { TokenModule } from './token/token.module';
+import { readFileSync } from 'node:fs';
 
 @Module({
   imports: [
@@ -24,6 +25,10 @@ import { TokenModule } from './token/token.module';
         ssl: {
           require: true,
           rejectUnauthorized: true,
+          ca: readFileSync(
+            process.env.DB_SSL_CA_PATH ?? '/app/certs/global-bundle.pem',
+            'utf8',
+          ),
         },
       },
     }),
